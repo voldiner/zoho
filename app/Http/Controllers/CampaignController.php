@@ -10,8 +10,11 @@ class CampaignController extends BaseController
 {
     public function index()
     {
-        $this->getRecord('Campaigns');
-        return redirect('/');
+        $result = $this->getRecord('Campaigns');
+        if (isset($result['error'])){
+            return redirect()->route('home')->with(['error' => 'Campaign error ' . $result['error']]);
+        }
+        return redirect()->route('home')->with(['success' => 'Get Campaign success']);
     }
 
 

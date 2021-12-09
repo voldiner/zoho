@@ -10,8 +10,11 @@ class ContactController extends BaseController
 {
     public function index()
     {
-        $this->getRecord('Contacts');
-        return redirect('/');
+        $result = $this->getRecord('Contacts');
+        if (isset($result['error'])){
+            return redirect()->route('home')->with(['error' => 'Contact error ' . $result['error']]);
+        }
+        return redirect()->route('home')->with(['success' => 'Get Contact success']);
     }
 
     /**

@@ -12,8 +12,11 @@ class DealController extends BaseController
 {
     public function index()
     {
-        $this->create();
-        return redirect('/');
+        $result = $this->create();
+        if (isset($result['error'])){
+            return redirect()->route('home')->with(['error' => 'Create Deal error ' . $result['error']]);
+        }
+        return redirect()->route('home')->with(['success' => 'Create Deal success']);
     }
 
     public function create()

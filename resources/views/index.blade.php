@@ -13,6 +13,7 @@
 <body>
 <div class="container">
     @dump(session()->all())
+    @include('includes.result_messages')
     <div class="row justify-content-center">
         <div class="col mt-5">
             <a href="{{ route('user') }}" class="btn btn-primary btn-lg" tabindex="-1" role="button" >Get User</a>

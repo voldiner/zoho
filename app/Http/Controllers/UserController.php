@@ -9,8 +9,12 @@ class UserController extends BaseController
 {
     public function index()
     {
-        $this->getUser();
-        return redirect('/');
+        $result = $this->getUser();
+
+        if (isset($result['error'])){
+            return redirect()->route('home')->with(['error' => 'User error ' . $result['error']]);
+        }
+        return redirect()->route('home')->with(['success' => 'Get User success']);
     }
 
     /**

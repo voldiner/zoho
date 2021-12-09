@@ -10,8 +10,11 @@ class AccountController extends BaseController
 {
     public function index()
     {
-        $this->getRecord('Accounts');
-        return redirect('/');
+        $result = $this->getRecord('Accounts');
+        if (isset($result['error'])){
+            return redirect()->route('home')->with(['error' => 'Account error ' . $result['error']]);
+        }
+        return redirect()->route('home')->with(['success' => 'Get Account success']);
     }
 
     /**
