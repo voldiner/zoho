@@ -12,15 +12,26 @@
 </head>
 <body>
 <div class="container">
-    @dump(session()->all())
+    {{--@dump(session()->all())--}}
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="alert alert-primary" role="alert">
+                <h2> Тестування запитів ZOHO API</h2>
+            </div>
+        </div>
+    </div>
     @include('includes.result_messages')
+
     <div class="row justify-content-center">
         <div class="col mt-5">
+
             <a href="{{ route('user') }}" class="btn btn-primary btn-lg" tabindex="-1" role="button" >Get User</a>
             <a href="{{ route('account') }}" class="btn btn-primary btn-lg" tabindex="-1" role="button" >Get Account</a>
             <a href="{{ route('contact') }}" class="btn btn-primary btn-lg" tabindex="-1" role="button" >Get Contact</a>
             <a href="{{ route('campaign') }}" class="btn btn-primary btn-lg" tabindex="-1" role="button" >Get Campaign</a>
             <a href="{{ route('deal') }}" class="btn btn-primary btn-lg @if (!session()->has(['users', 'accounts','contacts', 'campaigns'])) disabled @endif" tabindex="-1" role="button" >Create deal</a>
+            <a href="{{ route('task') }}" class="btn btn-primary btn-lg @if (!session()->has(['deal_id','users', 'contacts'])) disabled @endif" tabindex="-1" role="button" >Create task</a>
+            <a href="{{ route('clear') }}" class="btn btn-lg btn-danger" tabindex="-1" role="button" >Clear</a>
         </div>
     </div>
     <div class="row">

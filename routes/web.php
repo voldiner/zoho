@@ -5,6 +5,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +23,11 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return view('welcome');
 //});
-Route::get('/',[indexController::class, 'index'])->name('home');
+Route::get('/',[IndexController::class, 'index'])->name('home');
 Route::get('/user', [UserController::class, 'index'])->name('user');
 Route::get('/account', [AccountController::class, 'index'])->name('account');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/campaign', [CampaignController::class, 'index'])->name('campaign');
 Route::get('/deal', [DealController::class, 'index'])->name('deal');
+Route::get('/task', [TaskController::class, 'index'])->name('task');
+Route::get('/clear', [IndexController::class, 'clear'])->name('clear');

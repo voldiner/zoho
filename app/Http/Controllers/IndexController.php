@@ -10,4 +10,10 @@ class IndexController extends Controller
     {
         return view('index');
     }
+
+    public function clear()
+    {
+        session()->forget(['users', 'accounts','contacts', 'campaigns', 'deal_id']);
+        return view('index');
+    }
 }

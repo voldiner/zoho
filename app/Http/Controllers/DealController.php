@@ -21,29 +21,50 @@ class DealController extends BaseController
 
     public function create()
     {
+        $result = [];
+        if (!session()->has(['users', 'accounts','contacts', 'campaigns'])){
+            $result['error'] = 'Помилка! Спочатку необхідно виконати GetUser, GetAccount, Get Contact, Get Campain';
+            return $result;
+        }
         $url = 'https://www.zohoapis.com/crm/v2/Deals';
         $token = $this->getToken();
-        $array_param[] = [
-            'Owner' => ["id" => $this->getUser()->id],
-            "Account_Name" => ["id" => $this->getRecord('Accounts')->id],
-            "Contact_Name" => ["id" => $this->getRecord('Contacts')->id],
-            "Campaign_Source" => ["id" => $this->getRecord('Campaigns')->id],
-            "Type" => "New Business",
-            "Description" => "Design your own layouts that align your business processes precisely. Assign them to profiles appropriately.",
-            "Deal_Name" => "Deal_Name_Voldiner",
-            "Amount" => 1000.67,
-            "Next_Step" => "Next_Step",
-            "Stage" => "Needs Analysis",
-            "Lead_Source" => "Cold Call",
-            "Closing_Date" => "2022-01-25"
-        ];
+        if ($token) {
+            $array_param[] = [
+                'Owner' => ["id" => session()->get('users')->id],
+                "Account_Name" => ["id" => session()->get('accounts')->id],
+                "Contact_Name" => ["id" => session()->get('contacts')->id],
+                "Campaign_Source" => ["id" => session()->get('campaigns')->id],
+                "Type" => "New Business",
+                "Description" => "Test deal Voldiner",
+                "Deal_Name" => "Deal_Name_Voldiner",
+                "Amount" => 1000.67,
+                "Next_Step" => "Next_Step",
+                "Stage" => "Needs Analysis",
+                "Lead_Source" => "Cold Call",
+                "Closing_Date" => "2022-01-25"
+            ];
+            $parameters['data'] = $array_param;
 
-        $parameters['data'] = $array_param;
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->post($url, $parameters);
 
-        $response = Http::withToken($token)
-            ->acceptJson()
-           ->post($url, $parameters);
-        dd($response->object());
+            if ($response->status() == 401) {
+                $result['error'] = 'INVALID_TOKEN';
+                return $result;
+            } elseif ($response->status() == 201) {
+
+                if (isset($response->object()->data[0]->code) && $response->object()->data[0]->code == "SUCCESS") {
+                    $deal_id = $response->object()->data[0]->details->id;
+                    session(['deal_id' => $deal_id]);
+                    $result['deals'] = $response->object()->data[0];
+                    return $result;
+                }
+            }
+        }
+        $result['error'] = 'UNKNOWN ERROR';
+        return $result;
+
 
     }
 }
