@@ -13,7 +13,7 @@ class IndexController extends Controller
 
     public function clear()
     {
-        session()->forget(['users', 'accounts','contacts', 'campaigns', 'deal_id']);
+        session()->forget(['users', 'accounts','contacts', 'campaigns', 'deal_id', 'token']);
         return view('index');
     }
 }

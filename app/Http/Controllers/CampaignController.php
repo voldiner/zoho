@@ -17,30 +17,4 @@ class CampaignController extends BaseController
         return redirect()->route('home')->with(['success' => 'Get Campaign success']);
     }
 
-
-    public function getRecord($name)
-    {
-        $result = [];
-        $url = 'https://www.zohoapis.com/crm/v2/' . $name;
-        $token = $this->getToken();
-        if ($token){
-            $response = Http::withToken($token)
-                ->acceptJson()
-                ->get($url);
-            if ($response->status()== 401){
-                $result['error'] = 'INVALID_TOKEN';
-                return $result;
-            }elseif ($response->status()== 200){
-                if (isset($response->object()->data[0])) {
-                    $item = $response->object()->data[0];
-                    $key = Str::lower($name);
-                    session([ $key => $item]);
-                    $result[$key] = $item;
-                    return $result;
-                }
-            }
-        }
-        $result['error'] = 'UNKNOWN ERROR';
-        return $result;
-    }
 }
